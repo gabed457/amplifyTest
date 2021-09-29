@@ -1,0 +1,104 @@
+type Todo @model {
+  id: ID!
+  name: String!
+  description: String
+}
+
+input CreateCustomersInput {
+  id: Int!
+  name: String!
+  phone: String!
+  email: String!
+}
+
+type Customers {
+  id: Int!
+  name: String!
+  phone: String!
+  email: String!
+}
+
+input UpdateCustomersInput {
+  id: Int!
+  name: String
+  phone: String
+  email: String
+}
+
+input CreateOrdersInput {
+  id: Int!
+  customerId: Int!
+  orderDate: AWSDateTime
+}
+
+type Orders {
+  id: Int!
+  customerId: Int!
+  orderDate: AWSDateTime
+}
+
+input UpdateOrdersInput {
+  id: Int!
+  customerId: Int
+  orderDate: AWSDateTime
+}
+
+input CreateUsersInput {
+  id: Int!
+  ins_dt: AWSDateTime
+  upd_dt: AWSDateTime
+  office_id: Int
+  first_name: String
+  last_name: String
+}
+
+type users {
+  id: Int!
+  ins_dt: AWSDateTime
+  upd_dt: AWSDateTime
+  office_id: Int
+  first_name: String
+  last_name: String
+}
+
+input UpdateUsersInput {
+  id: Int!
+  ins_dt: AWSDateTime
+  upd_dt: AWSDateTime
+  office_id: Int
+  first_name: String
+  last_name: String
+}
+
+type Mutation {
+  deleteCustomers(id: Int!): Customers
+  createCustomers(createCustomersInput: CreateCustomersInput!): Customers
+  updateCustomers(updateCustomersInput: UpdateCustomersInput!): Customers
+  deleteOrders(id: Int!): Orders
+  createOrders(createOrdersInput: CreateOrdersInput!): Orders
+  updateOrders(updateOrdersInput: UpdateOrdersInput!): Orders
+  deleteUsers(id: Int!): users
+  createUsers(createUsersInput: CreateUsersInput!): users
+  updateUsers(updateUsersInput: UpdateUsersInput!): users
+}
+
+type Query {
+  getCustomers(id: Int!): Customers
+  listCustomerss: [Customers]
+  getOrders(id: Int!): Orders
+  listOrderss: [Orders]
+  getUsers(id: Int!): users
+  listUserss: [users]
+}
+
+type Subscription {
+  onCreateCustomers: Customers @aws_subscribe(mutations: ["createCustomers"])
+  onCreateOrders: Orders @aws_subscribe(mutations: ["createOrders"])
+  onCreateUsers: users @aws_subscribe(mutations: ["createUsers"])
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
